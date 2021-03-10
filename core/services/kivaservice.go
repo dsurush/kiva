@@ -52,27 +52,6 @@ func (receiver *KivaService) SendPostPayments(Body models.Repayments) (error, bo
 	return nil, true, newBody
 }
 
-/*
-public ResponseEntity<?> sendPostIndividualLoan(IndividualLoan individualLoan) {
-        Loan loan = null;
-        try {
-            LOGGER.info("got params for request\n" + individualLoan);
-            loan = (Loan)this.restTemplate.postForObject("https://api.kivaws.org/v3/partner/63/loan_draft", individualLoan, Loan.class, new Object[0]);
-            LOGGER.info("got answer for response\n" + loan);
-            return new ResponseEntity(loan, HttpStatus.OK);
-        }
-        catch (Exception e) {
-            this.str = e.getMessage();
-            if (this.str.contains("Could not read document: Unrecognized token 'Success': was expecting ('true', 'false' or 'null')")) {
-                LOGGER.info("SUCCESS");
-                return new ResponseEntity(loan, HttpStatus.OK);
-            }
-            LOGGER.error(e);
-            return new ResponseEntity(loan, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
- */
-
 func (receiver *KivaService) SendPostIndividualLoan(Body models.IndividualLoan) (error, bool, models.IndividualLoan) {
 	client := &http.Client{}
 	var newBody models.IndividualLoan

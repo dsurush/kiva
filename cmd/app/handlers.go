@@ -93,9 +93,108 @@ func SendPostPaymentsHandler(writer http.ResponseWriter, request *http.Request, 
 	}
 	return
 }
+/*
+public ResponseEntity<?> loanIndividual(HttpServletRequest request) {
+        IndividualLoan loan = new IndividualLoan();
+        ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+        ArrayList<Entrep> entreps = new ArrayList<Entrep>();
+        String partnerToken = request.getParameter("partner_token");
+        String uuid = request.getParameter("uuid");
+        Integer description_language_id = Integer.valueOf(request.getParameter("description_language_id"));
+        String activity_id = request.getParameter("activity_id");
+        String theme_type_id = request.getParameter("theme_type_id");
+        String location = request.getParameter("location");
+
+        String rep_person_id = request.getParameter("rep_person_id");
+        Boolean client_waiver_signed = Boolean.valueOf(request.getParameter("client_waiver_signed"));
+        String loanuse = request.getParameter("loanuse");
+        String description = request.getParameter("description");
+        String currency = request.getParameter("currency");
+        String disburse_time = request.getParameter("disburse_time");
+        String image_url = request.getParameter("image_url");
+        String client_id = request.getParameter("client_id");
+        String loan_id = request.getParameter("loan_id");
+        String first_name = request.getParameter("first_name");
+        String last_name = request.getParameter("last_name");
+        String gender = request.getParameter("gender");
+        Double amount = Double.valueOf(request.getParameter("amount"));
+        entreps.add(new Entrep(client_id, loan_id, first_name, last_name, gender, amount));
+        Integer schedule_count = Integer.valueOf(request.getParameter("schedule_count"));
+        if (schedule_count > 0) {
+            for (int i = 0; i < schedule_count; ++i) {
+                String date = request.getParameter("date_" + (i + 1));
+                Double principal = Double.valueOf(request.getParameter("principal_" + (i + 1)));
+                Double interest = Double.valueOf(request.getParameter("interest_" + (i + 1)));
+                schedules.add(new Schedule(date, principal, interest));
+            }
+        }
+        loan.setActivity_id(activity_id);
+        loan.setClient_waiver_signed(client_waiver_signed);
+        loan.setCurrency(currency);
+        loan.setDescription(description);
+        loan.setDescription_language_id(description_language_id);
+        loan.setDisburse_time(disburse_time);
+        loan.setImage_url(image_url);
+        loan.setLoanuse(loanuse);
+        loan.setLocation(location);
+        loan.setPartner_token(partnerToken);
+        loan.setUuid(uuid);
+        loan.setTheme_type_id(theme_type_id);
+        loan.setRep_person_id(rep_person_id);
+        loan.setSchedule(schedules);
+        loan.setEntreps(entreps);
+        LOGGER.info(loan);
+        return this.kivaService.sendPostIndividualLoan(loan);
+    }
+ */
 
 func SendPostIndividualLoan(writer http.ResponseWriter, request *http.Request, pr httprouter.Params) {
 	writer.Header().Set("Content-Type", "application/json; charset=utf-8")
-
+	var loan models.IndividualLoan
+	var schedules []models.Schedule
+	var entreps []models.Entrep
+	PartnerToken := request.Header.Get("partner_token")
+	UUID := request.Header.Get("uuid")
+	DescriptionLanguageID, err := strconv.Atoi(request.Header.Get("description_language_id"))
+	if err != nil {
+		log.Println("can't convert Description Language ID err is ", err)
+		return
+	}
+	ActivityID := request.Header.Get("activity_id")
+	ThemeTypeID := request.Header.Get("theme_type_id")
+	Location := request.Header.Get("location")
+	RepPersonID := request.Header.Get("rep_person_id")
+	ClientWaiverSigned, err := strconv.ParseBool(request.Header.Get("client_waiver_signed"))
+	if err != nil {
+		log.Println("can't conver to boolean client_waiver_signed err is ", err)
+		return
+	}
+	Loanuse := request.Header.Get("loanuse")
+	Description := request.Header.Get("description")
+	Currency := request.Header.Get("currency")
+	DisburseTime := request.Header.Get("disburse_time")
+	ImageUrl := request.Header.Get("image_url")
+	ClientID := request.Header.Get("client_id")
+	LoanID := request.Header.Get("loan_id")
+	FirstName := request.Header.Get("first_name")
+	LastName := request.Header.Get("last_name")
+	Gender := request.Header.Get("gender")
+	Amount, err := strconv.ParseFloat(request.Header.Get("amount"), 64)
+	if err != nil {
+		log.Println("can't parse amount err is ", err)
+		return
+	}
+	/*
+	        entreps.add(new Entrep(client_id, loan_id, first_name, last_name, gender, amount));
+	        Integer schedule_count = Integer.valueOf(request.getParameter("schedule_count"));
+	        if (schedule_count > 0) {
+	            for (int i = 0; i < schedule_count; ++i) {
+	                String date = request.getParameter("date_" + (i + 1));
+	                Double principal = Double.valueOf(request.getParameter("principal_" + (i + 1)));
+	                Double interest = Double.valueOf(request.getParameter("interest_" + (i + 1)));
+	                schedules.add(new Schedule(date, principal, interest));
+	            }
+	        }
+	 */
 	return
 }
