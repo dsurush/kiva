@@ -153,27 +153,31 @@ func SendPostIndividualLoan(writer http.ResponseWriter, request *http.Request, p
 	var loan models.IndividualLoan
 	var schedules []models.Schedule
 	var entreps []models.Entrep
-	PartnerToken := request.Header.Get("partner_token")
-	UUID := request.Header.Get("uuid")
+	service := services.NewKivaService()
+
+	loan.PartnerToken = request.Header.Get("partner_token")
+	loan.UUID = request.Header.Get("uuid")
 	DescriptionLanguageID, err := strconv.Atoi(request.Header.Get("description_language_id"))
 	if err != nil {
 		log.Println("can't convert Description Language ID err is ", err)
 		return
 	}
-	ActivityID := request.Header.Get("activity_id")
-	ThemeTypeID := request.Header.Get("theme_type_id")
-	Location := request.Header.Get("location")
-	RepPersonID := request.Header.Get("rep_person_id")
-	ClientWaiverSigned, err := strconv.ParseBool(request.Header.Get("client_waiver_signed"))
+	loan.DescriptionLanguageID = int64(DescriptionLanguageID)
+
+	loan.ActivityID = request.Header.Get("activity_id")
+	loan.ThemeTypeID = request.Header.Get("theme_type_id")
+	loan.Location = request.Header.Get("location")
+	loan.RepPersonID = request.Header.Get("rep_person_id")
+	loan.ClientWaiverSigned, err = strconv.ParseBool(request.Header.Get("client_waiver_signed"))
 	if err != nil {
 		log.Println("can't conver to boolean client_waiver_signed err is ", err)
 		return
 	}
-	Loanuse := request.Header.Get("loanuse")
-	Description := request.Header.Get("description")
-	Currency := request.Header.Get("currency")
-	DisburseTime := request.Header.Get("disburse_time")
-	ImageUrl := request.Header.Get("image_url")
+	loan.Loanuse = request.Header.Get("loanuse")
+	loan.Description = request.Header.Get("description")
+	loan.Currency = request.Header.Get("currency")
+	loan.DisburseTime = request.Header.Get("disburse_time")
+	loan.ImageUrl = request.Header.Get("image_url")
 	ClientID := request.Header.Get("client_id")
 	LoanID := request.Header.Get("loan_id")
 	FirstName := request.Header.Get("first_name")
@@ -192,17 +196,24 @@ func SendPostIndividualLoan(writer http.ResponseWriter, request *http.Request, p
 		Gender:    Gender,
 		Amount:    Amount,
 	}
+	entreps = append(entreps, newEntrep)
+	ScheduleCount, err := strconv.Atoi(request.Header.Get("schedule_count"))
+	if err != nil {
+		log.Println("can't convert ScheduleCount err is ", err)
+		return
+	}
+	if ScheduleCount > 0{
+		for i := 0; i < ScheduleCount; i++{
+			var Schedule models.Schedule
+			Schedule.Date = request.Header.Get(fmt.Sprintf("date_%d", i + 1))
+			Schedule.Principal, err = strconv.ParseFloat(request.Header.Get(fmt.Sprintf("principal_%d", i + 1)), 64)
+			Schedule.Interest, err = strconv.ParseFloat(request.Header.Get(fmt.Sprintf("interest_%d", i + 1)), 64)
+			schedules = append(schedules, Schedule)
+		}
+	}
+	err, ok, response := service.SendPostIndividualLoan(loan)
 	/*
-	        entreps.add(new Entrep(client_id, loan_id, first_name, last_name, gender, amount));
-	        Integer schedule_count = Integer.valueOf(request.getParameter("schedule_count"));
-	        if (schedule_count > 0) {
-	            for (int i = 0; i < schedule_count; ++i) {
-	                String date = request.getParameter("date_" + (i + 1));
-	                Double principal = Double.valueOf(request.getParameter("principal_" + (i + 1)));
-	                Double interest = Double.valueOf(request.getParameter("interest_" + (i + 1)));
-	                schedules.add(new Schedule(date, principal, interest));
-	            }
-	        }
+	        return this.kivaService.sendPostIndividualLoan(loan);
 	 */
 	return
 }
