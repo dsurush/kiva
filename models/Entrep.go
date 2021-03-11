@@ -6,5 +6,5 @@ type Entrep struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Gender    string `json:"gender"`
-	Amount    string `json:"amount"`
+	Amount    float64 `json:"amount"`
 }

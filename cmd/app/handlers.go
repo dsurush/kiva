@@ -184,6 +184,14 @@ func SendPostIndividualLoan(writer http.ResponseWriter, request *http.Request, p
 		log.Println("can't parse amount err is ", err)
 		return
 	}
+	newEntrep := models.Entrep{
+		ClientID:  ClientID,
+		LoanID:    LoanID,
+		FirstName: FirstName,
+		LastName:  LastName,
+		Gender:    Gender,
+		Amount:    Amount,
+	}
 	/*
 	        entreps.add(new Entrep(client_id, loan_id, first_name, last_name, gender, amount));
 	        Integer schedule_count = Integer.valueOf(request.getParameter("schedule_count"));
