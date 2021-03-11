@@ -15,6 +15,7 @@ func init(){
 	router.GET("/", SayHello)
 	router.POST("/api/kiva/repayments", SendPostPaymentsHandler)
 	router.POST("/api/kiva/loan_draft/individual", SendPostIndividualLoan)
+	router.POST("/api/kiva/loan_draft/group", SendPostGroupLoan)
 	port := fmt.Sprintf(":%d", 8888)
 	log.Println(http.ListenAndServe(port, router))
 }
