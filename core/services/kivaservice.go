@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"kiva/models"
+	"kiva/settings"
 	"log"
 	"net/http"
 )
@@ -24,7 +25,8 @@ func (receiver *KivaService) SendPostPayments(Body models.Repayments) (error, bo
 		log.Printf("can't add to body, err is %err", err)
 		return err, true, newBody
 	}
-	URL := `https://api.kivaws.org/v3/partner/63/repayments`
+//	URL := `https://api.kivaws.org/v3/partner/63/repayments`
+	URL := settings.ReqURL.SendPostPayments
 	req, err := http.NewRequest(
 		"POST", URL, bytes.NewBuffer(body),
 	)
@@ -60,7 +62,9 @@ func (receiver *KivaService) SendPostIndividualLoan(Body models.IndividualLoan) 
 		log.Printf("can't add to body, err is %err", err)
 		return err, true, newBody
 	}
-	URL := `https://api.kivaws.org/v3/partner/63/loan_draft`
+//	URL := `https://api.kivaws.org/v3/partner/63/loan_draft`
+	URL := settings.ReqURL.SendPostIndividualLoan
+
 	req, err := http.NewRequest(
 		"POST", URL, bytes.NewBuffer(body),
 	)
@@ -95,7 +99,8 @@ func (receiver *KivaService) SendPostGroupLoan(Body models.GroupLoan) (error, bo
 		log.Printf("can't add to body, err is %err", err)
 		return err, true, newBody
 	}
-	URL := `http://localhost:7070/kiva/ws/v1/api.dev.kivaws.org/v3/partner/63/loan_draft`
+//	URL := `http://localhost:7070/kiva/ws/v1/api.dev.kivaws.org/v3/partner/63/loan_draft`
+	URL := settings.ReqURL.SendPostGroupLoan
 	req, err := http.NewRequest(
 		"POST", URL, bytes.NewBuffer(body),
 	)
