@@ -1,5 +1,6 @@
 {
   "send_post_payments": "https://api.kivaws.org/v3/partner/63/repayments",
   "send_post_individual_loan": "https://api.kivaws.org/v3/partner/63/loan_draft",
-  "send_post_group_loan": "http://localhost:7070/kiva/ws/v1/api.dev.kivaws.org/v3/partner/63/loan_draft"
+  "send_post_group_loan": "http://localhost:7070/kiva/ws/v1/api.dev.kivaws.org/v3/partner/63/loan_draft",
+  "port_run": "8888"
 }

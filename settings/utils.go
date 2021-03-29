@@ -11,8 +11,8 @@ var (
 	ReqURL RequestsURL
 )
 
-func ReadSettings(filepath string) RequestsURL {
-	var ReqURL RequestsURL
+func ReadSettings(filepath string) {
+	//var ReqURL RequestsURL
 	doc, err := ioutil.ReadFile(filepath)
 
 	if err != nil {
@@ -25,5 +25,4 @@ func ReadSettings(filepath string) RequestsURL {
 		fmt.Printf("err is = %e\n", err)
 	}
 
-	return ReqURL
 }
